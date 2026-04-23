@@ -1,6 +1,6 @@
 ---
 name: liquid-glassify
-description: Generate a complete, production-ready single-file website with Apple Liquid Glass aesthetic. Translucent panels with backdrop blur, depth layers, vivid animated mesh-gradient backgrounds, soft light refraction, and spring motion. Use for landing pages, product launch sites, portfolios, SaaS marketing pages, event microsites, hackathon demos, and anywhere you want a site that feels like visionOS or an Apple keynote instead of another Bootstrap template. Trigger with "liquid glass," "glassify," "glass theme site," "Apple-style landing page," "visionOS landing page," or "make this look premium."
+description: Generate a complete, production-ready single-file website with Apple Liquid Glass aesthetic (NOT glassmorphism). Thin refractive blur, multi-layer specular edge highlights, radial top-light reflections, vivid content refraction through near-transparent panels, spring motion. The aesthetic is iOS 26 / macOS 26 / visionOS, not Frosty 2019 glassmorphism. Use for landing pages, product launch sites, portfolios, SaaS marketing, event microsites, hackathon demos, and anywhere you want a site that feels like an Apple keynote instead of a Bootstrap template. Trigger with "liquid glass," "glassify," "Apple glass," "visionOS landing page," "iOS 26 style," or "make this look premium."
 best_for:
   - Landing pages (product, startup, waitlist)
   - Portfolio and personal sites
@@ -15,231 +15,313 @@ estimated_time: "3-7 min"
 
 Ship websites that look like Apple designed them. Single-file HTML, zero build step, one `open index.html` away from a site that makes people ask "who did your design?"
 
+## Apple Liquid Glass vs Glassmorphism (Critical)
+
+Most AI-generated "glass" sites produce **glassmorphism**, which is the 2019 frosted-glass trend: heavy blur, thick white tint overlay, everything looks milky. This is **wrong** for the Liquid Glass aesthetic.
+
+Apple's **Liquid Glass** (iOS 26, macOS 26, visionOS) looks different:
+
+| | Glassmorphism (wrong) | Apple Liquid Glass (right) |
+|---|---|---|
+| Blur amount | 20-40px heavy | 8-16px thin |
+| Background tint | `rgba(255,255,255,0.08-0.15)` opaque | `rgba(255,255,255,0.02-0.05)` barely visible |
+| Saturation | 150-180% | 180-220% (vivid refraction) |
+| Content behind | Washed out, milky | Clearly visible, color-refracted |
+| Edges | Single 1px border | Multi-layer specular (top bright, sides subtle, bottom faint) |
+| Top highlight | None | Radial specular gradient (like light on curved glass) |
+| Feel | Frosted bathroom window | 3D piece of polished crystal |
+
+**The Liquid Glass signature: content behind a Liquid Glass panel is sharper and more saturated than content NOT behind it.** Think of real glass: it catches light at the edges, magnifies and saturates what's behind it, and has a subtle specular shine. Glassmorphism just blurs everything into milky paste.
+
 ## When to Use
 
-Use this skill any time a user asks for a website, landing page, portfolio, or marketing page and wants it to feel **premium without looking like a template**. Also use when the user mentions Apple, visionOS, Liquid Glass, glassmorphism, "glassy," "frosted," "make it look like Vision Pro," or "look like an Apple keynote."
+Use any time a user asks for a website, landing page, portfolio, or marketing page and wants it to feel **premium without looking like a template**. Also use on "Apple," "visionOS," "Liquid Glass," "iOS 26 style," "frosted," "make it look like Vision Pro," or "look like an Apple keynote."
 
-Do NOT use for: admin dashboards (glass fatigues on dense data), forms-heavy apps (legibility), print output, or anything that needs to be fast on low-end Android devices (backdrop-filter has a perf cost).
+Do NOT use for: admin dashboards (glass fatigues on dense data), forms-heavy apps (legibility), print output, or sites that must run on low-end Android (backdrop-filter has a perf cost).
 
 ## Design Principles (Enforce Strictly)
 
-Liquid Glass is not "add blur and call it a day." It is a material system with rules. Every site this skill produces must follow all six.
-
-1. **Translucency is conditional.** Glass panels must sit on a vivid, high-contrast background. A glass panel on a flat grey background is a dead panel. Always pair glass with a mesh gradient, photo, or animated color field.
-2. **Depth is layered.** Stack at least two depths: background layer (mesh gradient), midground layer (glass cards), foreground layer (accent elements, CTA). Each layer gets a different blur intensity and shadow depth.
-3. **Light refracts on edges.** Every glass panel gets a 1px inner border with `rgba(255,255,255,0.15-0.25)` and an inset highlight on the top edge. This is what separates real glass from cheap glassmorphism.
-4. **Corner radius is soft.** Glass panels use `border-radius: 20-28px`. Buttons use 14-18px. Nothing uses 0 except full-bleed sections.
-5. **Motion is spring, not linear.** All transitions use `cubic-bezier(0.34, 1.56, 0.64, 1)` or similar overshoot easing. Hover states scale by 1.02, not 1.1. Subtle.
-6. **Backgrounds are alive.** The mesh gradient animates slowly (20-40s loop). Orbs drift. The site breathes. But it never distracts from the content, the motion stays below 0.3 intensity.
+1. **Thin blur, high saturation.** Default `blur(14px) saturate(190%)`. Never go above 22px blur. The goal is "transparent crystal," not "shower door."
+2. **Near-zero tint.** Background at `rgba(255,255,255,0.028)` to `rgba(255,255,255,0.055)`. If you can see white washing out the content behind, the tint is too high.
+3. **Multi-layer specular edges (signature move).** Use a composite box-shadow with:
+   - Strong top inset highlight: `inset 0 1px 0.5px rgba(255,255,255,0.35-0.45)`
+   - Soft top falloff: `inset 0 2px 6px -2px rgba(255,255,255,0.08-0.1)`
+   - Subtle side inset: `inset ±1px 0 0 rgba(255,255,255,0.06-0.08)`
+   - Faint bottom: `inset 0 -1px 0 rgba(255,255,255,0.02-0.03)`
+   - Outer ambient: `0 8px 24px -8px rgba(0,0,0,0.4)`
+4. **Radial specular via `::before` pseudo-element.** Every glass panel gets a `::before` with a radial gradient from top-center, emulating light hitting curved glass. This is what sells "3D crystal" over "flat pane."
+5. **Border-top is brighter than sides.** Top edge catches more light. Use `border: 1px solid rgba(255,255,255,0.08); border-top-color: rgba(255,255,255,0.12);`
+6. **Spring motion, subtle.** All transitions use `cubic-bezier(0.34, 1.56, 0.64, 1)`. Hover scales cap at 1.02. Lift by 4-6px translateY max.
+7. **Backgrounds are vivid but monochromatic-accent.** Mesh gradients should use ONE accent color family (Linear's indigo family, Anthropic's rust, etc), not a rainbow.
 
 ## Intake (Ask Before Building)
 
-Ask these questions one at a time. Wait for each answer before the next.
+Ask these questions one at a time. Wait for each answer.
 
 1. **Site type.** Landing page, portfolio, product launch, event site, SaaS marketing, or something else?
-2. **One-sentence pitch.** What does the site sell, promise, or communicate? This becomes the hero headline.
-3. **Primary CTA.** What single action do you want visitors to take? (Sign up, buy, download, contact, RSVP, etc.)
-4. **Vibe.** Three words. Examples: "serious, technical, confident" / "playful, bold, energetic" / "calm, premium, trustworthy." This drives the color palette.
-5. **Sections needed.** Default is hero + features + CTA. Ask if they want: testimonials, pricing, FAQ, logos, team, stats, changelog, newsletter, or something else.
-6. **Brand color (optional).** If they have one, use it as the primary accent. If not, pick based on vibe.
+2. **One-sentence pitch.** What does the site sell, promise, or communicate?
+3. **Primary CTA.** What single action do you want visitors to take?
+4. **Vibe.** Three words. Drives the palette.
+5. **Sections needed.** Default is hero + features + CTA. Offer: testimonials, pricing, FAQ, logos, team, stats.
+6. **Brand color (optional).** If they have one, use it as the primary accent. Otherwise pick based on vibe.
 
-Do not ask about fonts, layout, or technical details. This skill has strong opinions and should apply them.
+Do not ask about fonts or layout. This skill has strong opinions.
 
 ## Build Steps
 
-1. **Scaffold the HTML.** Single file, semantic HTML5. `<header>`, `<main>` with section tags, `<footer>`.
-2. **Apply the design tokens** (CSS variables, see below).
-3. **Build the animated mesh background** (see Background Recipes).
-4. **Compose the sections** using the glass component patterns.
-5. **Add spring motion** on hover states, scroll-triggered reveals for cards, and background drift.
-6. **Wire any interactive bits** with minimal vanilla JS (no frameworks, no build step).
-7. **Test dark/light.** Default is dark. If the user wants light, flip the token set.
-8. **Save** as `index.html` in the user's chosen directory. Default: `./liquid-glass-site/index.html`.
+1. Scaffold semantic HTML5 (`<header>`, `<main>` with `<section>` tags, `<footer>`).
+2. Apply the design tokens below.
+3. Build the animated background (see Recipes).
+4. Compose sections using the glass component patterns.
+5. Add `::before` specular highlights on every glass panel.
+6. Wire spring motion on hover and scroll-reveal on sections.
+7. Test: open in browser, check that content behind glass is sharper and more saturated than content not behind glass. If it looks milky, the blur is too high or the tint is too opaque.
+8. Save as `./liquid-glass-site/index.html` by default.
 
-## Design Tokens (Use Verbatim)
-
-Drop this `:root` block into every site. Tune accent colors per vibe.
+## Design Tokens (Linear + Liquid Glass, use verbatim)
 
 ```css
 :root {
-  /* Surfaces */
-  --glass-bg: rgba(255, 255, 255, 0.06);
-  --glass-bg-strong: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.18);
-  --glass-border-strong: rgba(255, 255, 255, 0.28);
-  --glass-highlight: rgba(255, 255, 255, 0.25);
+  /* Base palette (swap for your theme) */
+  --bg: #08090a;
+  --text: #f7f8f8;
+  --text-soft: #d0d6e0;
+  --text-dim: #8a8f98;
 
-  /* Depth */
-  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.25),
-                  inset 0 1px 0 0 var(--glass-highlight);
-  --shadow-glass-lg: 0 24px 64px rgba(0, 0, 0, 0.4),
-                     inset 0 1px 0 0 var(--glass-highlight);
+  /* Borders (wireframes-in-moonlight) */
+  --border-faint: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
 
-  /* Blur */
-  --blur-soft: blur(12px) saturate(160%);
-  --blur-med: blur(24px) saturate(180%);
-  --blur-hard: blur(48px) saturate(200%);
+  /* Accent (pick one family, not a rainbow) */
+  --accent: #5e6ad2;
+  --accent-bright: #7170ff;
+  --accent-hover: #828fff;
+
+  /* LIQUID GLASS values (NOT glassmorphism) */
+  --liquid-tint: rgba(255, 255, 255, 0.028);
+  --liquid-tint-strong: rgba(255, 255, 255, 0.055);
+  --liquid-blur: blur(14px) saturate(190%);
+  --liquid-blur-soft: blur(8px) saturate(170%);
+  --liquid-blur-deep: blur(22px) saturate(200%);
+
+  /* The signature: multi-layer specular edges */
+  --liquid-shadow:
+    inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.35),
+    inset 0 2px 6px -2px rgba(255, 255, 255, 0.08),
+    inset 1px 0 0 0 rgba(255, 255, 255, 0.06),
+    inset -1px 0 0 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.02),
+    0 1px 2px rgba(0, 0, 0, 0.3),
+    0 8px 24px -8px rgba(0, 0, 0, 0.4);
+
+  --liquid-shadow-lg:
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 2px 10px -2px rgba(255, 255, 255, 0.1),
+    inset 1px 0 0 0 rgba(255, 255, 255, 0.08),
+    inset -1px 0 0 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 0 rgba(255, 255, 255, 0.03),
+    0 2px 4px rgba(0, 0, 0, 0.35),
+    0 24px 48px -12px rgba(0, 0, 0, 0.5);
 
   /* Radius */
-  --r-sm: 12px;
-  --r-md: 20px;
-  --r-lg: 28px;
-  --r-xl: 40px;
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 28px;
 
   /* Motion */
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-
-  /* Text */
-  --text: #ffffff;
-  --text-soft: rgba(255, 255, 255, 0.72);
-  --text-dim: rgba(255, 255, 255, 0.5);
-
-  /* Background base */
-  --bg: #0a0a12;
-
-  /* Accent palette (tune per vibe) */
-  --accent-1: #7c3aed; /* violet */
-  --accent-2: #ec4899; /* pink */
-  --accent-3: #06b6d4; /* cyan */
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: var(--bg); color: var(--text); overflow-x: hidden; }
-body { font: 16px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif; }
+body {
+  font-family: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-feature-settings: "cv01", "ss03";
+  font-size: 16px; line-height: 1.5; font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
 ```
 
 ## Vibe-to-Palette Mapping
 
-| Vibe keywords | Accent 1 | Accent 2 | Accent 3 | Base |
-|---------------|----------|----------|----------|------|
-| serious, technical, confident | `#0ea5e9` (sky) | `#6366f1` (indigo) | `#06b6d4` (cyan) | `#030712` |
-| playful, bold, energetic | `#f43f5e` (rose) | `#f59e0b` (amber) | `#a855f7` (violet) | `#0a0a12` |
-| calm, premium, trustworthy | `#6366f1` (indigo) | `#0ea5e9` (sky) | `#14b8a6` (teal) | `#0c0a1a` |
-| warm, human, approachable | `#f97316` (orange) | `#ec4899` (pink) | `#eab308` (yellow) | `#1a0a0a` |
-| futuristic, AI, edge | `#a855f7` (violet) | `#06b6d4` (cyan) | `#22d3ee` (bright cyan) | `#050010` |
+Pick ONE family. Do not mix families.
+
+| Vibe keywords | Base | Accent | Accent-bright | Accent-hover |
+|---------------|------|--------|---------------|--------------|
+| serious, technical, confident | `#08090a` | `#5e6ad2` (Linear indigo) | `#7170ff` | `#828fff` |
+| playful, bold, energetic | `#0a0a12` | `#ec4899` (rose) | `#f472b6` | `#f9a8d4` |
+| calm, premium, trustworthy | `#0c0a1a` | `#6366f1` (indigo) | `#818cf8` | `#a5b4fc` |
+| warm, human, approachable | `#1a0a08` | `#f97316` (orange) | `#fb923c` | `#fdba74` |
+| futuristic, AI, edge | `#050010` | `#a855f7` (violet) | `#c084fc` | `#d8b4fe` |
+| monochrome, editorial | `#0a0a0a` | `#e5e5e5` (silver) | `#ffffff` | `#fafafa` |
 
 ## Background Recipes (Pick One)
 
-### Recipe A: Animated Mesh Gradient (default, broadest appeal)
+### Recipe A: Monochromatic Mesh (default, on-brand)
 
 ```css
 .mesh-bg {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
+  position: fixed; inset: -15%; z-index: -1;
   background:
-    radial-gradient(circle at 15% 20%, var(--accent-1), transparent 45%),
-    radial-gradient(circle at 85% 15%, var(--accent-2), transparent 45%),
-    radial-gradient(circle at 50% 90%, var(--accent-3), transparent 45%),
+    radial-gradient(circle at 22% 28%, var(--accent), transparent 50%),
+    radial-gradient(circle at 78% 18%, var(--accent-bright), transparent 45%),
+    radial-gradient(circle at 48% 88%, #3a2e6b, transparent 50%),
     var(--bg);
-  filter: blur(80px) saturate(140%);
-  animation: mesh-drift 30s ease-in-out infinite;
+  filter: blur(120px) saturate(130%);
+  opacity: 0.55;
+  animation: mesh-drift 34s ease-in-out infinite;
 }
 @keyframes mesh-drift {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(-3%, 2%) scale(1.05); }
-  66% { transform: translate(2%, -3%) scale(0.98); }
+  33% { transform: translate(-2%, 1.5%) scale(1.04); }
+  66% { transform: translate(1.5%, -2%) scale(0.98); }
 }
 ```
 
-```html
-<div class="mesh-bg" aria-hidden="true"></div>
-```
-
-### Recipe B: Floating Orbs (more playful)
+### Recipe B: Floating Accent Orbs
 
 ```css
 .orbs { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: var(--bg); }
 .orbs::before, .orbs::after {
   content: ""; position: absolute; width: 50vmax; height: 50vmax; border-radius: 50%;
-  filter: blur(120px); opacity: 0.6;
+  filter: blur(140px); opacity: 0.45;
 }
-.orbs::before { background: var(--accent-1); top: -20vmax; left: -15vmax; animation: orb-a 24s ease-in-out infinite; }
-.orbs::after { background: var(--accent-2); bottom: -20vmax; right: -15vmax; animation: orb-b 28s ease-in-out infinite; }
+.orbs::before { background: var(--accent); top: -20vmax; left: -15vmax; animation: orb-a 24s ease-in-out infinite; }
+.orbs::after { background: var(--accent-bright); bottom: -20vmax; right: -15vmax; animation: orb-b 28s ease-in-out infinite; }
 @keyframes orb-a { 50% { transform: translate(20vw, 30vh); } }
 @keyframes orb-b { 50% { transform: translate(-20vw, -30vh); } }
 ```
 
-### Recipe C: Conic Aurora (for futuristic vibe)
+### Recipe C: Conic Aurora
 
 ```css
 .aurora { position: fixed; inset: -20%; z-index: -1; background: var(--bg); }
 .aurora::before {
   content: ""; position: absolute; inset: 0;
-  background: conic-gradient(from 0deg at 50% 50%, var(--accent-1), var(--accent-2), var(--accent-3), var(--accent-1));
-  filter: blur(100px); opacity: 0.5; animation: spin 40s linear infinite;
+  background: conic-gradient(from 0deg at 50% 50%, var(--accent), var(--accent-bright), var(--accent-hover), var(--accent));
+  filter: blur(120px); opacity: 0.4; animation: spin 50s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 ```
 
 ## Glass Component Library
 
-### Glass Card (the workhorse)
+### Liquid Glass Card (the workhorse)
+
+Always ships with the `::before` specular pseudo-element. That is non-negotiable.
 
 ```css
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: var(--blur-med);
-  -webkit-backdrop-filter: var(--blur-med);
-  border: 1px solid var(--glass-border);
+.card {
+  background: var(--liquid-tint);
+  backdrop-filter: var(--liquid-blur);
+  -webkit-backdrop-filter: var(--liquid-blur);
+  border: 1px solid var(--border);
+  border-top-color: var(--border-strong);
   border-radius: var(--r-lg);
-  box-shadow: var(--shadow-glass);
+  box-shadow: var(--liquid-shadow);
   padding: 32px;
-  transition: all 0.4s var(--ease-spring);
+  transition: all 0.5s var(--ease-spring);
+  position: relative;
+  overflow: hidden;
 }
-.glass-card:hover {
-  transform: translateY(-4px) scale(1.01);
-  background: var(--glass-bg-strong);
-  border-color: var(--glass-border-strong);
-  box-shadow: var(--shadow-glass-lg);
+/* THE signature (radial specular at top, like light hitting curved glass) */
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 55%;
+  background: radial-gradient(
+    ellipse 80% 100% at 50% 0%,
+    rgba(255, 255, 255, 0.07) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+.card > * { position: relative; z-index: 1; }
+.card:hover {
+  transform: translateY(-4px);
+  background: var(--liquid-tint-strong);
+  border-color: var(--border-strong);
+  box-shadow: var(--liquid-shadow-lg);
 }
 ```
 
-### Primary CTA Button
+### Primary CTA (solid accent, not gradient)
+
+Linear/Apple style: solid color, strong but subtle inset highlight, accent glow outer shadow.
 
 ```css
 .cta {
   display: inline-flex; align-items: center; gap: 8px;
-  padding: 14px 28px;
-  background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-  border: 1px solid var(--glass-border-strong);
-  border-radius: var(--r-sm);
-  color: white; font-weight: 600; text-decoration: none;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  padding: 12px 22px;
+  background: var(--accent);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top-color: rgba(255,255,255,0.18);
+  border-radius: var(--r-xs);
+  color: #ffffff; font-weight: 590; font-size: 14.5px;
+  letter-spacing: -0.01em;
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 0 rgba(0, 0, 0, 0.15),
+    0 4px 16px rgba(94, 106, 210, 0.35),
+    0 1px 2px rgba(0, 0, 0, 0.25);
   transition: all 0.3s var(--ease-spring);
 }
-.cta:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
-.cta:active { transform: translateY(0) scale(0.99); }
+.cta:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+    0 8px 24px rgba(113, 112, 255, 0.45);
+}
 ```
 
-### Glass Nav (sticky dock style)
+### Secondary CTA (Liquid Glass)
+
+```css
+.cta-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 22px;
+  background: var(--liquid-tint);
+  backdrop-filter: var(--liquid-blur-soft);
+  -webkit-backdrop-filter: var(--liquid-blur-soft);
+  border: 1px solid var(--border);
+  border-top-color: var(--border-strong);
+  border-radius: var(--r-xs);
+  color: var(--text); font-weight: 510; font-size: 14.5px;
+  box-shadow: var(--liquid-shadow);
+  transition: all 0.3s var(--ease-spring);
+}
+.cta-secondary:hover { background: var(--liquid-tint-strong); transform: translateY(-1px); border-color: var(--border-strong); }
+```
+
+### Glass Nav (sticky dock)
 
 ```css
 .nav {
-  position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
-  display: flex; gap: 4px; padding: 8px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--blur-med);
-  -webkit-backdrop-filter: var(--blur-med);
-  border: 1px solid var(--glass-border);
+  position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 2px; padding: 6px;
+  background: var(--liquid-tint);
+  backdrop-filter: var(--liquid-blur);
+  -webkit-backdrop-filter: var(--liquid-blur);
+  border: 1px solid var(--border);
+  border-top-color: var(--border-strong);
   border-radius: 100px;
-  box-shadow: var(--shadow-glass);
+  box-shadow: var(--liquid-shadow);
   z-index: 100;
 }
-.nav a { padding: 8px 16px; border-radius: 100px; color: var(--text-soft); text-decoration: none; transition: all 0.2s var(--ease-smooth); }
-.nav a:hover { background: var(--glass-bg-strong); color: var(--text); }
-```
-
-### Section Scaffold
-
-```css
-section { padding: 96px 24px; max-width: 1200px; margin: 0 auto; }
-.hero { min-height: 90vh; display: flex; flex-direction: column; justify-content: center; }
-h1 { font-size: clamp(42px, 7vw, 88px); font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 24px; }
-h2 { font-size: clamp(32px, 4vw, 56px); font-weight: 600; letter-spacing: -0.01em; margin-bottom: 20px; }
-p.lead { font-size: clamp(18px, 2vw, 22px); color: var(--text-soft); max-width: 60ch; margin-bottom: 40px; }
-.grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+.nav a { padding: 7px 16px; border-radius: 100px; color: var(--text-soft); font-size: 14px; font-weight: 510; transition: all 0.2s var(--ease-smooth); }
+.nav a:hover { background: rgba(255, 255, 255, 0.04); color: var(--text); }
+.nav .nav-cta {
+  background: var(--accent); color: #fff; font-weight: 590;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 8px rgba(94, 106, 210, 0.3);
+}
 ```
 
 ### Scroll Reveal (one JS hook, no library)
@@ -248,23 +330,39 @@ p.lead { font-size: clamp(18px, 2vw, 22px); color: var(--text-soft); max-width: 
 <script>
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => e.isIntersecting && e.target.classList.add("in"));
-}, { threshold: 0.15 });
+}, { threshold: 0.1 });
 document.querySelectorAll("[data-reveal]").forEach(el => io.observe(el));
 </script>
 <style>
-[data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-spring); }
+[data-reveal] { opacity: 0; transform: translateY(20px); transition: opacity 0.8s var(--ease-smooth), transform 0.9s var(--ease-spring); }
 [data-reveal].in { opacity: 1; transform: none; }
 </style>
+<noscript><style>[data-reveal] { opacity: 1 !important; transform: none !important; }</style></noscript>
 ```
 
-## Section Templates (Compose As Needed)
+### Typography (Linear-inspired)
+
+```css
+h1 { font-size: clamp(44px, 7vw, 84px); font-weight: 510; line-height: 1.02; letter-spacing: -0.034em; }
+h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 510; letter-spacing: -0.022em; }
+h3 { font-size: 20px; font-weight: 590; letter-spacing: -0.012em; }
+p.lead { font-size: clamp(17px, 1.8vw, 19px); color: var(--text-soft); max-width: 60ch; line-height: 1.55; }
+```
+
+Weight 510 is the Linear signature (between regular 400 and medium 500). Use it for displays and emphasized text. Weight 590 for strong emphasis.
+
+## Section Templates
 
 **Hero**
 ```html
 <section class="hero">
-  <h1 data-reveal>[one-sentence pitch, break over 2 lines]</h1>
-  <p class="lead" data-reveal>[subheadline, 1-2 sentences, concrete benefit]</p>
-  <div data-reveal><a class="cta" href="#cta">[CTA label] →</a></div>
+  <span class="eyebrow" data-reveal>[tagline]</span>
+  <h1 data-reveal>[pitch line 1]<br><span class="accent">[pitch line 2]</span></h1>
+  <p class="lead" data-reveal>[subheadline]</p>
+  <div class="cta-row" data-reveal>
+    <a class="cta" href="#cta">[Primary CTA]</a>
+    <a class="cta-secondary" href="#more">[Secondary CTA]</a>
+  </div>
 </section>
 ```
 
@@ -272,58 +370,47 @@ document.querySelectorAll("[data-reveal]").forEach(el => io.observe(el));
 ```html
 <section>
   <h2 data-reveal>[section headline]</h2>
+  <p class="lead" data-reveal>[context]</p>
   <div class="grid-3">
-    <div class="glass-card" data-reveal><h3>[feature]</h3><p>[benefit]</p></div>
-    <!-- repeat 3-6 cards -->
-  </div>
-</section>
-```
-
-**CTA Section**
-```html
-<section style="text-align: center;">
-  <div class="glass-card" data-reveal style="padding: 64px; max-width: 640px; margin: 0 auto;">
-    <h2>[final pitch line]</h2>
-    <p class="lead">[reinforcement]</p>
-    <a class="cta" href="[link]">[CTA]</a>
+    <div class="card" data-reveal><h3>[feature]</h3><p>[benefit]</p></div>
   </div>
 </section>
 ```
 
 ## Anti-Patterns (Do Not Ship These)
 
-- Glass cards on a flat background. Dead panels. Always pair with vivid backgrounds.
-- Over-blurred text (text should be at 100% opacity against glass, never translucent).
-- Low contrast accent colors that disappear on the mesh background.
-- More than three accent colors in the palette. Becomes clownish.
-- Hover scales above 1.05. Breaks the "premium restraint" feel.
-- Linear transitions on interactive elements. Always use the spring curve.
-- Backdrop-filter without `-webkit-backdrop-filter` fallback (Safari still needs it).
-- More than one full-bleed animated element. The eye has nowhere to rest.
-- Generic stock icons or emoji as feature bullets. Use minimal SVG line icons or skip icons entirely.
-- Lorem ipsum in the final output. Always write real copy from the intake answers.
+- **Glassmorphism blur values** (20-40px). The #1 mistake. Keep blur 8-16px.
+- **Opaque white tint** (rgba(255,255,255,0.1+)). Content gets washed out. Stay under 0.055.
+- Glass panels without `::before` specular. Flat, fake-looking.
+- Single border-color on all sides. Top must be brighter than sides/bottom.
+- Rainbow backgrounds. Pick ONE accent family.
+- Gradient text everywhere. Linear uses type weight and color contrast, not rainbows.
+- Hover scales above 1.05. Breaks the restraint feel.
+- Linear transitions on interactive elements. Always spring curve.
+- Backdrop-filter without `-webkit-backdrop-filter`. Safari still needs the prefix.
+- Lorem ipsum in the final output. Always write real copy.
 
 ## Verification Before Shipping
 
-Check each before reporting the site as done:
+Every item must pass:
 
-- [ ] Single HTML file, opens in browser with no build step, no network calls for dependencies.
-- [ ] Background is animated (mesh, orbs, or aurora).
-- [ ] Every glass panel has: backdrop-filter, 1px inner border, inset highlight shadow, 20-28px corner radius.
-- [ ] Primary CTA uses the accent gradient, not a flat color.
-- [ ] Nav is a floating dock at the top, not a full-width bar.
-- [ ] Hero headline is readable on the animated background (check contrast).
-- [ ] At least one scroll-reveal element (the `data-reveal` hook).
-- [ ] No lorem ipsum. All copy derived from intake answers.
-- [ ] Works on mobile (viewport meta tag, responsive grid, no horizontal scroll).
-- [ ] File size under 40KB. If above, the skill is generating too much, trim.
+- [ ] Single HTML file, zero build, zero CDN dependencies (Inter font CDN is the only external load allowed).
+- [ ] Background is animated and monochromatic-accent (one color family).
+- [ ] Every glass panel has: `backdrop-filter` between 8-16px blur, saturate 170-220%, tint under 0.06, multi-layer `box-shadow`, `::before` radial specular.
+- [ ] Border-top is brighter than border-sides/bottom.
+- [ ] Primary CTA is solid accent (not gradient) with strong inset top highlight.
+- [ ] Content behind glass panels is clearly visible and SHARPER than content not behind them. If it looks milky or frosted, reduce blur or tint.
+- [ ] Typography uses weight 510 for displays, aggressive negative letter-spacing (-0.02 to -0.035em), Inter Variable if available.
+- [ ] At least one `data-reveal` scroll-triggered element.
+- [ ] No lorem ipsum; all copy from intake answers.
+- [ ] File size under 40KB (excluding external font CSS).
+- [ ] `@media (prefers-reduced-motion: reduce)` block disables animations.
+- [ ] `<noscript>` fallback keeps reveal elements visible.
 
 ## Output
 
-Save to `./liquid-glass-site/index.html` by default, or the user's chosen path. Report the absolute path and one line on what to tune if they want a different vibe.
+Save to `./liquid-glass-site/index.html` by default. Report the absolute path. Offer `open ./liquid-glass-site/index.html` (macOS) or `xdg-open` (Linux) to preview.
 
-Offer to open it in the browser for them: `open ./liquid-glass-site/index.html` (macOS) or `xdg-open` (Linux).
+## Source Attribution
 
-## Extending
-
-To add more sections (pricing, testimonials, FAQ), reuse the glass-card pattern with different content structures. The design system is consistent, so new sections drop in without breaking the aesthetic.
+Apple's Liquid Glass design language debuted in iOS 26, macOS 26, and visionOS (2025). The multi-layer specular edges, radial top-highlight, and "refractive-not-frosted" aesthetic are the signature moves. This skill packages those specifications into reusable CSS patterns.

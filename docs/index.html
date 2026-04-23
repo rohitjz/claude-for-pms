@@ -5,262 +5,489 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>claude-for-pms · PM skills for Claude</title>
   <meta name="description" content="Three Claude skills that collapse a week of PM work into one conversation. Built around Winston, Karpathy, and Apple Liquid Glass.">
-  <meta name="theme-color" content="#050010">
+  <meta name="theme-color" content="#08090a">
   <meta property="og:title" content="claude-for-pms">
   <meta property="og:description" content="Three Claude skills that collapse a week of PM work into one conversation.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://rohitjz.github.io/claude-for-pms/">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23a855f7'/%3E%3Cstop offset='1' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='22' fill='url(%23g)'/%3E%3Ctext x='50' y='68' font-family='system-ui' font-size='52' font-weight='700' text-anchor='middle' fill='white'%3EC%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%235e6ad2'/%3E%3Ctext x='50' y='68' font-family='Inter,system-ui' font-size='52' font-weight='510' text-anchor='middle' fill='%23f7f8f8'%3EC%3C/text%3E%3C/svg%3E">
   <style>
     :root {
-      --glass-bg: rgba(255, 255, 255, 0.06);
-      --glass-bg-strong: rgba(255, 255, 255, 0.12);
-      --glass-border: rgba(255, 255, 255, 0.18);
-      --glass-border-strong: rgba(255, 255, 255, 0.28);
-      --glass-highlight: rgba(255, 255, 255, 0.25);
-      --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.25), inset 0 1px 0 0 var(--glass-highlight);
-      --shadow-glass-lg: 0 24px 64px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 var(--glass-highlight);
-      --blur-soft: blur(12px) saturate(160%);
-      --blur-med: blur(24px) saturate(180%);
-      --blur-hard: blur(48px) saturate(200%);
-      --r-sm: 12px;
-      --r-md: 20px;
-      --r-lg: 28px;
-      --r-xl: 40px;
+      /* Linear palette (dark-mode-native) */
+      --bg: #08090a;
+      --panel: #0f1011;
+      --elevated: #191a1b;
+      --surface-2: #28282c;
+
+      /* Text */
+      --text: #f7f8f8;
+      --text-soft: #d0d6e0;
+      --text-dim: #8a8f98;
+      --text-faint: #5a5f68;
+
+      /* Borders (Linear's wireframes-in-moonlight) */
+      --border-faint: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.12);
+
+      /* Linear accent */
+      --indigo: #5e6ad2;
+      --indigo-bright: #7170ff;
+      --indigo-hover: #828fff;
+      --indigo-glow: rgba(113, 112, 255, 0.25);
+
+      /* Apple Liquid Glass values (NOT glassmorphism) */
+      --liquid-tint: rgba(255, 255, 255, 0.028);
+      --liquid-tint-strong: rgba(255, 255, 255, 0.055);
+      --liquid-blur: blur(14px) saturate(190%);
+      --liquid-blur-soft: blur(8px) saturate(170%);
+      --liquid-blur-deep: blur(22px) saturate(200%);
+
+      /* The Liquid Glass signature: multi-layer specular edges */
+      --liquid-shadow:
+        inset 0 1px 0.5px 0 rgba(255, 255, 255, 0.35),
+        inset 0 2px 6px -2px rgba(255, 255, 255, 0.08),
+        inset 1px 0 0 0 rgba(255, 255, 255, 0.06),
+        inset -1px 0 0 0 rgba(255, 255, 255, 0.06),
+        inset 0 -1px 0 0 rgba(255, 255, 255, 0.02),
+        0 1px 2px rgba(0, 0, 0, 0.3),
+        0 8px 24px -8px rgba(0, 0, 0, 0.4);
+      --liquid-shadow-lg:
+        inset 0 1px 1px 0 rgba(255, 255, 255, 0.45),
+        inset 0 2px 10px -2px rgba(255, 255, 255, 0.1),
+        inset 1px 0 0 0 rgba(255, 255, 255, 0.08),
+        inset -1px 0 0 0 rgba(255, 255, 255, 0.08),
+        inset 0 -1px 0 0 rgba(255, 255, 255, 0.03),
+        0 2px 4px rgba(0, 0, 0, 0.35),
+        0 24px 48px -12px rgba(0, 0, 0, 0.5);
+
+      /* Radius (Linear: 6-8px small, scales up for display) */
+      --r-xs: 6px;
+      --r-sm: 10px;
+      --r-md: 14px;
+      --r-lg: 20px;
+      --r-xl: 28px;
+
+      /* Motion */
       --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
       --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
-      --text: #ffffff;
-      --text-soft: rgba(255, 255, 255, 0.72);
-      --text-dim: rgba(255, 255, 255, 0.5);
-      --bg: #050010;
-      --accent-1: #a855f7;
-      --accent-2: #06b6d4;
-      --accent-3: #22d3ee;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { background: var(--bg); color: var(--text); overflow-x: hidden; scroll-behavior: smooth; }
-    body { font: 16px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; }
 
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif;
+      font-feature-settings: "cv01", "ss03";
+      font-size: 16px;
+      line-height: 1.5;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: inherit; text-decoration: none; }
+    code {
+      font-family: "Berkeley Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    }
+
+    /* Linear-palette subtle mesh (on-brand indigo gradients, not rainbow) */
     .mesh-bg {
-      position: fixed; inset: -20%; z-index: -1;
+      position: fixed; inset: -15%; z-index: -1;
       background:
-        radial-gradient(circle at 20% 25%, var(--accent-1), transparent 45%),
-        radial-gradient(circle at 80% 20%, var(--accent-2), transparent 45%),
-        radial-gradient(circle at 50% 85%, var(--accent-3), transparent 40%),
+        radial-gradient(circle at 22% 28%, var(--indigo), transparent 50%),
+        radial-gradient(circle at 78% 18%, var(--indigo-bright), transparent 45%),
+        radial-gradient(circle at 48% 88%, #3a2e6b, transparent 50%),
         var(--bg);
-      filter: blur(100px) saturate(140%);
-      animation: mesh-drift 30s ease-in-out infinite;
-      opacity: 0.9;
+      filter: blur(120px) saturate(130%);
+      opacity: 0.55;
+      animation: mesh-drift 34s ease-in-out infinite;
     }
     @keyframes mesh-drift {
       0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(-3%, 2%) scale(1.05); }
-      66% { transform: translate(2%, -3%) scale(0.98); }
+      33% { transform: translate(-2%, 1.5%) scale(1.04); }
+      66% { transform: translate(1.5%, -2%) scale(0.98); }
     }
 
     body::before {
       content: "";
       position: fixed; inset: 0; z-index: -1;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-      opacity: 0.03;
+      opacity: 0.025;
       pointer-events: none;
     }
 
+    /* Nav dock (Liquid Glass, not frosted) */
     .nav {
       position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-      display: flex; gap: 4px; padding: 8px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-med);
-      -webkit-backdrop-filter: var(--blur-med);
-      border: 1px solid var(--glass-border);
+      display: flex; gap: 2px; padding: 6px;
+      background: var(--liquid-tint);
+      backdrop-filter: var(--liquid-blur);
+      -webkit-backdrop-filter: var(--liquid-blur);
+      border: 1px solid var(--border);
+      border-top-color: var(--border-strong);
       border-radius: 100px;
-      box-shadow: var(--shadow-glass);
+      box-shadow: var(--liquid-shadow);
       z-index: 100;
+      overflow: hidden;
     }
     .nav a {
-      padding: 8px 18px; border-radius: 100px;
-      color: var(--text-soft); text-decoration: none; font-size: 14px; font-weight: 500;
+      padding: 7px 16px; border-radius: 100px;
+      color: var(--text-soft); font-size: 14px; font-weight: 510;
+      letter-spacing: -0.01em;
       transition: all 0.2s var(--ease-smooth);
     }
-    .nav a:hover { background: var(--glass-bg-strong); color: var(--text); }
-    .nav .nav-cta {
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-      color: white; font-weight: 600;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
+    .nav a:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
     }
-    .nav .nav-cta:hover { transform: scale(1.03); color: white; }
+    .nav .nav-cta {
+      background: var(--indigo);
+      color: #ffffff; font-weight: 590;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 2px 8px rgba(94, 106, 210, 0.3);
+    }
+    .nav .nav-cta:hover {
+      background: var(--indigo-hover);
+      color: #ffffff;
+      transform: scale(1.02);
+    }
 
-    section { padding: 120px 24px 80px; max-width: 1200px; margin: 0 auto; position: relative; }
-    .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; gap: 28px; padding-top: 140px; }
+    section {
+      padding: 120px 24px 80px;
+      max-width: 1120px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 28px;
+      padding-top: 140px;
+    }
 
+    /* Eyebrow pill (Liquid Glass) */
     .eyebrow {
       display: inline-flex; align-items: center; gap: 10px;
-      padding: 7px 16px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-soft);
-      -webkit-backdrop-filter: var(--blur-soft);
-      border: 1px solid var(--glass-border);
+      padding: 6px 14px;
+      background: var(--liquid-tint);
+      backdrop-filter: var(--liquid-blur-soft);
+      -webkit-backdrop-filter: var(--liquid-blur-soft);
+      border: 1px solid var(--border);
+      border-top-color: var(--border-strong);
       border-radius: 100px;
-      font-size: 13px; color: var(--text-soft);
+      font-size: 13px;
+      font-weight: 510;
+      color: var(--text-soft);
+      letter-spacing: -0.01em;
       width: fit-content;
+      box-shadow: var(--liquid-shadow);
     }
     .eyebrow::before {
       content: ""; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent-2); box-shadow: 0 0 10px var(--accent-2);
+      background: var(--indigo-bright);
+      box-shadow: 0 0 10px var(--indigo-bright);
       animation: pulse 2s ease-in-out infinite;
     }
-    @keyframes pulse { 50% { opacity: 0.4; } }
+    @keyframes pulse { 50% { opacity: 0.45; } }
 
+    /* Typography: Linear's compressed display sizes */
     h1 {
-      font-size: clamp(42px, 7vw, 88px);
-      font-weight: 700;
+      font-size: clamp(44px, 7vw, 84px);
+      font-weight: 510;
+      line-height: 1.02;
+      letter-spacing: -0.034em;
+    }
+    h1 .accent {
+      color: var(--text-soft);
+      font-weight: 400;
+      letter-spacing: -0.028em;
+    }
+    h1 .ind { color: var(--indigo-hover); }
+    h2 {
+      font-size: clamp(32px, 4vw, 48px);
+      font-weight: 510;
+      letter-spacing: -0.022em;
       line-height: 1.05;
-      letter-spacing: -0.03em;
+      margin-bottom: 16px;
     }
-    h1 .gradient {
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      color: transparent;
+    h3 {
+      font-size: 20px;
+      font-weight: 590;
+      letter-spacing: -0.012em;
+      margin-bottom: 12px;
     }
-    h2 { font-size: clamp(32px, 4vw, 52px); font-weight: 600; letter-spacing: -0.02em; margin-bottom: 20px; }
-    h3 { font-size: 22px; font-weight: 600; margin-bottom: 14px; letter-spacing: -0.01em; }
-    p.lead { font-size: clamp(18px, 2vw, 22px); color: var(--text-soft); max-width: 62ch; line-height: 1.5; }
+    p.lead {
+      font-size: clamp(17px, 1.8vw, 19px);
+      color: var(--text-soft);
+      max-width: 60ch;
+      line-height: 1.55;
+      font-weight: 400;
+    }
 
-    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    /* CTAs */
+    .cta-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .cta {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 26px;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-      border: 1px solid var(--glass-border-strong);
-      border-radius: var(--r-sm);
-      color: white; font-weight: 600; text-decoration: none; font-size: 15px;
-      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3), inset 0 1px 0 rgba(255,255,255,0.3);
+      padding: 12px 22px;
+      background: var(--indigo);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top-color: rgba(255,255,255,0.18);
+      border-radius: var(--r-xs);
+      color: #ffffff; font-weight: 590; font-size: 14.5px;
+      letter-spacing: -0.01em;
+      box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
+        inset 0 -1px 0 0 rgba(0, 0, 0, 0.15),
+        0 4px 16px rgba(94, 106, 210, 0.35),
+        0 1px 2px rgba(0, 0, 0, 0.25);
       transition: all 0.3s var(--ease-spring);
     }
-    .cta:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 14px 32px rgba(168, 85, 247, 0.5), inset 0 1px 0 rgba(255,255,255,0.4); }
+    .cta:hover {
+      background: var(--indigo-hover);
+      transform: translateY(-1px);
+      box-shadow:
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+        inset 0 -1px 0 0 rgba(0, 0, 0, 0.15),
+        0 8px 24px rgba(113, 112, 255, 0.45),
+        0 2px 4px rgba(0, 0, 0, 0.3);
+    }
     .cta-secondary {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 14px 26px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-soft);
-      -webkit-backdrop-filter: var(--blur-soft);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--r-sm);
-      color: var(--text); text-decoration: none; font-size: 15px; font-weight: 500;
+      padding: 12px 22px;
+      background: var(--liquid-tint);
+      backdrop-filter: var(--liquid-blur-soft);
+      -webkit-backdrop-filter: var(--liquid-blur-soft);
+      border: 1px solid var(--border);
+      border-top-color: var(--border-strong);
+      border-radius: var(--r-xs);
+      color: var(--text); font-weight: 510; font-size: 14.5px;
+      letter-spacing: -0.01em;
+      box-shadow: var(--liquid-shadow);
       transition: all 0.3s var(--ease-spring);
     }
-    .cta-secondary:hover { background: var(--glass-bg-strong); border-color: var(--glass-border-strong); transform: translateY(-1px); }
+    .cta-secondary:hover {
+      background: var(--liquid-tint-strong);
+      transform: translateY(-1px);
+      border-color: var(--border-strong);
+    }
 
+    /* THE LIQUID GLASS CARD (Apple's refractive aesthetic) */
     .card {
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-med);
-      -webkit-backdrop-filter: var(--blur-med);
-      border: 1px solid var(--glass-border);
+      background: var(--liquid-tint);
+      backdrop-filter: var(--liquid-blur);
+      -webkit-backdrop-filter: var(--liquid-blur);
+      border: 1px solid var(--border);
+      border-top-color: var(--border-strong);
       border-radius: var(--r-lg);
-      box-shadow: var(--shadow-glass);
-      padding: 36px;
+      box-shadow: var(--liquid-shadow);
+      padding: 32px;
       transition: all 0.5s var(--ease-spring);
       position: relative;
       overflow: hidden;
     }
-    .card:hover { transform: translateY(-6px); background: var(--glass-bg-strong); border-color: var(--glass-border-strong); box-shadow: var(--shadow-glass-lg); }
+    /* The signature: radial specular at top, like light hitting curved glass */
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 55%;
+      background: radial-gradient(
+        ellipse 80% 100% at 50% 0%,
+        rgba(255, 255, 255, 0.07) 0%,
+        rgba(255, 255, 255, 0.02) 40%,
+        transparent 70%
+      );
+      pointer-events: none;
+      border-radius: inherit;
+      transition: opacity 0.5s var(--ease-smooth);
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      background: var(--liquid-tint-strong);
+      border-color: var(--border-strong);
+      box-shadow: var(--liquid-shadow-lg);
+    }
+    .card > * { position: relative; z-index: 1; }
+
     .card .num {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 40px; height: 40px; border-radius: 14px;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-      font-weight: 700; font-size: 16px; color: white;
-      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+      width: 34px; height: 34px;
+      border-radius: 10px;
+      background: var(--indigo);
+      font-weight: 590; font-size: 14px; color: #ffffff;
+      letter-spacing: -0.01em;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        0 4px 12px rgba(94, 106, 210, 0.3);
       margin-bottom: 22px;
     }
-    .card p { color: var(--text-soft); margin-bottom: 0; }
-    .card .quote-line {
-      color: var(--text); font-style: italic;
-      margin-top: 20px; padding-top: 20px;
-      border-top: 1px solid var(--glass-border);
+    .card p {
+      color: var(--text-soft);
       font-size: 15px;
+      line-height: 1.55;
+    }
+    .card .quote-line {
+      color: var(--text);
+      font-style: italic;
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-faint);
+      font-size: 14.5px;
+      font-weight: 400;
     }
 
-    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 16px;
+    }
 
+    /* Final CTA (the biggest glass panel) */
     .final-cta {
       text-align: center;
-      padding: 72px 48px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-hard);
-      -webkit-backdrop-filter: var(--blur-hard);
-      border: 1px solid var(--glass-border-strong);
+      padding: 60px 44px;
+      background: var(--liquid-tint);
+      backdrop-filter: var(--liquid-blur-deep);
+      -webkit-backdrop-filter: var(--liquid-blur-deep);
+      border: 1px solid var(--border);
+      border-top-color: var(--border-strong);
       border-radius: var(--r-xl);
-      box-shadow: var(--shadow-glass-lg);
-      max-width: 720px; margin: 0 auto;
+      box-shadow: var(--liquid-shadow-lg);
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
     }
-    .final-cta h2 { margin-bottom: 16px; }
-    .final-cta p.lead { margin: 0 auto 24px; }
+    .final-cta::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 50%;
+      background: radial-gradient(
+        ellipse 80% 100% at 50% 0%,
+        rgba(255, 255, 255, 0.08) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+      border-radius: inherit;
+    }
+    .final-cta > * { position: relative; z-index: 1; }
+    .final-cta h2 { margin-bottom: 12px; }
+    .final-cta p.lead { margin: 0 auto 20px; }
     .final-cta code {
-      display: block; text-align: left;
-      padding: 16px 20px;
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid var(--glass-border);
-      border-radius: var(--r-sm);
-      font-family: "SF Mono", Menlo, monospace; font-size: 12.5px;
-      color: var(--accent-3);
-      margin: 24px 0 28px;
+      display: block;
+      text-align: left;
+      padding: 14px 18px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid var(--border-faint);
+      border-radius: var(--r-xs);
+      font-size: 12.5px;
+      color: var(--indigo-hover);
+      margin: 22px 0 26px;
       overflow-x: auto;
       line-height: 1.7;
+      font-weight: 400;
     }
 
+    /* Footer */
     footer {
-      padding: 48px 24px; text-align: center;
-      color: var(--text-dim); font-size: 14px;
-      border-top: 1px solid var(--glass-border);
+      padding: 48px 24px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13.5px;
+      border-top: 1px solid var(--border-faint);
       margin-top: 80px;
+      font-weight: 400;
     }
-    footer a { color: var(--text-soft); text-decoration: none; transition: color 0.2s; }
+    footer a {
+      color: var(--text-soft);
+      transition: color 0.2s;
+      font-weight: 510;
+    }
     footer a:hover { color: var(--text); }
     footer code {
-      display: inline-block; padding: 2px 8px;
-      background: var(--glass-bg); border-radius: 6px;
-      font-family: "SF Mono", Menlo, monospace; font-size: 13px;
-      color: var(--accent-3);
+      display: inline-block;
+      padding: 2px 7px;
+      background: var(--liquid-tint);
+      border: 1px solid var(--border-faint);
+      border-radius: 5px;
+      font-size: 12.5px;
+      color: var(--indigo-hover);
     }
 
-    [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.8s var(--ease-smooth), transform 0.9s var(--ease-spring); }
+    /* Reveal */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s var(--ease-smooth), transform 0.9s var(--ease-spring);
+    }
     [data-reveal].in { opacity: 1; transform: none; }
 
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px; }
+    /* Stats row */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
     .stats .stat {
-      padding: 28px 20px;
-      background: var(--glass-bg);
-      backdrop-filter: var(--blur-soft);
-      -webkit-backdrop-filter: var(--blur-soft);
-      border: 1px solid var(--glass-border);
+      padding: 24px 20px;
+      background: var(--liquid-tint);
+      backdrop-filter: var(--liquid-blur-soft);
+      -webkit-backdrop-filter: var(--liquid-blur-soft);
+      border: 1px solid var(--border);
+      border-top-color: var(--border-strong);
       border-radius: var(--r-md);
       text-align: center;
+      box-shadow: var(--liquid-shadow);
+      position: relative;
+      overflow: hidden;
     }
+    .stats .stat::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 50%;
+      background: radial-gradient(ellipse 80% 100% at 50% 0%, rgba(255,255,255,0.06), transparent 70%);
+      pointer-events: none;
+      border-radius: inherit;
+    }
+    .stats .stat > * { position: relative; z-index: 1; }
     .stats .stat .n {
-      font-size: 38px; font-weight: 700; letter-spacing: -0.03em;
-      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 36px;
+      font-weight: 510;
+      letter-spacing: -0.028em;
+      color: var(--indigo-hover);
       line-height: 1;
     }
-    .stats .stat .l { font-size: 13px; color: var(--text-soft); margin-top: 8px; }
+    .stats .stat .l {
+      font-size: 12.5px;
+      color: var(--text-soft);
+      margin-top: 8px;
+      font-weight: 510;
+      letter-spacing: -0.005em;
+    }
 
     @media (max-width: 640px) {
       section { padding: 80px 16px 40px; }
-      .hero { padding-top: 120px; gap: 20px; }
-      .nav { top: 12px; padding: 6px; }
-      .nav a { padding: 7px 12px; font-size: 13px; }
-      .card { padding: 28px; }
-      .final-cta { padding: 48px 24px; }
+      .hero { padding-top: 110px; gap: 20px; }
+      .nav { top: 12px; padding: 5px; }
+      .nav a { padding: 6px 12px; font-size: 13px; }
+      .card { padding: 26px; }
+      .final-cta { padding: 44px 22px; }
       .stats { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       .mesh-bg { animation: none; }
+      .eyebrow::before { animation: none; }
       [data-reveal] { opacity: 1; transform: none; transition: none; }
       .card, .cta, .cta-secondary, .nav .nav-cta { transition: none; }
     }
@@ -274,20 +501,21 @@
     <a href="#skills">Skills</a>
     <a href="#rules">Why</a>
     <a href="#install">Install</a>
-    <a href="https://github.com/rohitjz/claude-for-pms" class="nav-cta" target="_blank" rel="noopener">⭐ Star</a>
+    <a href="https://github.com/rohitjz/claude-for-pms" class="nav-cta" target="_blank" rel="noopener">★ Star</a>
   </nav>
 
   <section class="hero">
     <span class="eyebrow" data-reveal>Three skills. One conversation. Built for PMs.</span>
     <h1 data-reveal>
       PM craft for Claude,<br>
-      <span class="gradient">built around frameworks that earned their opinions.</span>
+      <span class="accent">built around frameworks that</span><br>
+      <span class="ind">earned their opinions.</span>
     </h1>
     <p class="lead" data-reveal>
-      Three skills that collapse a week of product work into one conversation. Winston for the talk. Karpathy's council for the decision. Apple's Liquid Glass for the landing page. Opinionated. Framework-backed. Under a minute per result.
+      Three Claude skills that collapse a week of product work into one conversation. Winston for the talk. Karpathy's council for the decision. Apple's Liquid Glass for the landing page. Opinionated. Framework-backed. Under a minute per result.
     </p>
     <div class="cta-row" data-reveal>
-      <a class="cta" href="https://github.com/rohitjz/claude-for-pms" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+      <a class="cta" href="https://github.com/rohitjz/claude-for-pms" target="_blank" rel="noopener">★ Star on GitHub</a>
       <a class="cta-secondary" href="#skills">See the skills</a>
     </div>
     <div class="stats" data-reveal>
@@ -299,7 +527,7 @@
 
   <section id="skills">
     <h2 data-reveal>The three.</h2>
-    <p class="lead" data-reveal style="margin-bottom: 48px;">Each skill enforces a specific rule set from a named thinker. No options menus. No "you could also try." It does one thing, well.</p>
+    <p class="lead" data-reveal style="margin-bottom: 44px;">Each skill enforces a specific rule set from a named thinker. No options menus. No "you could also try." It does one thing, well.</p>
     <div class="grid-3">
       <div class="card" data-reveal>
         <div class="num">1</div>
@@ -316,7 +544,7 @@
       <div class="card" data-reveal>
         <div class="num">3</div>
         <h3>liquid-glassify</h3>
-        <p>Single-file landing pages with Apple Liquid Glass aesthetic. Animated mesh backgrounds, translucent glass panels, spring motion, six vibe presets. Zero build step, under 40KB.</p>
+        <p>Single-file landing pages with Apple Liquid Glass aesthetic. Refractive edge highlights, specular top-lighting, spring motion, vivid content refraction. Zero build step, under 40KB.</p>
         <p class="quote-line">"You're looking at one right now."</p>
       </div>
     </div>
@@ -324,11 +552,11 @@
 
   <section id="rules">
     <h2 data-reveal>Four rules. No exceptions.</h2>
-    <p class="lead" data-reveal style="margin-bottom: 48px;">What separates a PM-grade skill from another AI template.</p>
+    <p class="lead" data-reveal style="margin-bottom: 44px;">What separates a PM-grade skill from another AI template.</p>
     <div class="grid-3">
       <div class="card" data-reveal>
         <h3>Opinionated</h3>
-        <p>Every skill enforces a specific rule set. Winston's 40pt minimum. Karpathy's five-persona structure. Apple's 20-28px glass radius. No preferences UI.</p>
+        <p>Every skill enforces a specific rule set. Winston's 40pt minimum. Karpathy's five-persona structure. Apple's refractive 14px Liquid Glass blur with specular edges. No preferences UI.</p>
       </div>
       <div class="card" data-reveal>
         <h3>Framework-backed</h3>
@@ -344,16 +572,16 @@
   <section id="install">
     <div class="final-cta" data-reveal>
       <h2>Ship better PM work this week.</h2>
-      <p class="lead">Install globally, trigger naturally. The skill picks up when your conversation matches.</p>
+      <p class="lead">Install globally. Trigger naturally. The skill picks up when your conversation matches.</p>
       <code>git clone https://github.com/rohitjz/claude-for-pms.git
 cp -r claude-for-pms/{patrick-winston-presentation,council,liquid-glassify} ~/.claude/skills/</code>
-      <a class="cta" href="https://github.com/rohitjz/claude-for-pms" target="_blank" rel="noopener">⭐ Star on GitHub</a>
+      <a class="cta" href="https://github.com/rohitjz/claude-for-pms" target="_blank" rel="noopener">★ Star on GitHub</a>
     </div>
   </section>
 
   <footer>
-    <p>Built by <a href="https://github.com/rohitjz" target="_blank" rel="noopener">@rohitjz</a>. MIT licensed. Co-authored with Claude.</p>
-    <p style="margin-top: 10px; font-size: 12.5px;">This page was generated by <code>liquid-glassify</code>. You are looking at the skill's output.</p>
+    <p>Built by <a href="https://github.com/rohitjz" target="_blank" rel="noopener">@rohitjz</a>. MIT licensed. Co-authored with Claude. Theme inspired by Linear.</p>
+    <p style="margin-top: 8px; font-size: 12.5px;">This page was generated by <code>liquid-glassify</code>. You are looking at the skill's output.</p>
   </footer>
 
   <script>
