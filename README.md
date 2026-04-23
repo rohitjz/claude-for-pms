@@ -1,63 +1,153 @@
 # claude-for-pms
 
-Claude skills built for product managers. Drop-in frameworks you can invoke from [Claude Code](https://claude.com/claude-code), Claude Desktop, or anywhere skills run, so Claude applies the right PM craft without you rewriting the prompt every time.
+Three Claude skills that collapse a week of PM work into one conversation. Built around named frameworks (Winston, Karpathy, Apple) so the output is sharp enough to ship, not drafts that still need rework.
 
-## Skills
+If one saves you an hour, a ⭐ helps the next PM find it.
 
-### [patrick-winston-presentation](patrick-winston-presentation/)
+---
 
-Coach a presentation using Patrick Winston's MIT "How to Speak" framework. Five modes plus a Full Suite orchestrator:
+## The three demos
 
-1. **Opening**: Empowerment promise and first 60 seconds.
-2. **Slide Audit**: The 10 Winston slide crimes, each with a specific fix.
-3. **Memorability**: Winston Star (Symbol, Slogan, Surprise, Salient idea, Story).
-4. **Talk Structure**: Vision, Proof of Work, Contributions with a minute-by-minute outline.
-5. **Teaching**: Physical prop or vivid verbal equivalent, with story arc and script.
+### 1. Fix your opening in 30 seconds (`patrick-winston-presentation`)
 
-Use for keynotes, job talks, board presentations, investor pitches, all-hands, sales demos, technical teachings. Triggers on "Winston," "fix my talk," "audit my slides," "make this memorable," or any generic presentation prep request.
+You paste your draft opening:
+
+> "Hi everyone, thanks so much for having me. I'm excited to be here today to share what we've been working on at Acme. A bit about me first, I've been in product for..."
+
+The skill responds with:
+
+> **Cut everything above. You've spent 45 seconds on nothing.** Winston's rule: the first 60 seconds must promise a specific outcome, not introduce a human.
+>
+> **Your new opening (draft 1):**
+>
+> *"By the end of the next 15 minutes, you'll know whether our growth rate is defensible against Stripe, or whether you should pass. The number that made me question everything last month: 47% of our power users come back daily without a single notification. Here's what that changed..."*
+>
+> **Why this works:** The audience now has a decision to make by minute 15, a specific metric to anchor on, and a cliffhanger. They have a reason to keep listening.
+
+Five modes total: opening rewrite, slide audit (the 10 Winston slide crimes, each flagged with a specific fix like "delete the logo in the footer of slide 4, it's stealing attention from your first claim"), memorability (Winston's Star: Symbol, Slogan, Surprise, Salient idea, Story), full talk structure (vision, proof, contributions), and teaching with props. Plus a Full Suite mode that coaches an entire talk end-to-end.
+
+**Use for:** Series A/B pitches, board decks, keynote openings, job talks, internal all-hands that need to land.
+
+---
+
+### 2. Get five expert opinions in 30 seconds (`council`)
+
+You ask: *"Should we deprecate the v1 API in Q3?"*
+
+Five parallel subagents respond, each with a distinct lens:
+
+> **Operator:** *Six internal teams still pull v1. Deprecation without a migration path breaks the weekly billing pipeline and the Thursday revenue recap.*
+>
+> **Customer Advocate:** *Three enterprise contracts reference v1 endpoints verbatim in the signed SOW. Breaking them is a sales conversation, not an engineering decision.*
+>
+> **Skeptic:** *Stated cost of maintaining v1: $8K/quarter. Migration cost: estimated $120K. What problem are we actually solving?*
+>
+> **Strategist:** *If v1 is the legacy, announce sunset 12 months out, not 3. Buying optionality on the date is cheap; regretting a premature kill is expensive.*
+>
+> **Builder:** *I can ship a v1-to-v2 adapter in one sprint. Deprecation becomes a config flag instead of a release.*
+
+Followed by a moderator synthesis:
+
+> **Recommendation: Conditional yes.** Announce deprecation with a 12-month runway. Ship the adapter in the first sprint. Do not cut enterprise customers; offer managed migration. Biggest risk: the $8K/quarter framing is hiding the real cost driver (security patching on v1, which is multiples higher). Verify before locking the date.
+
+Five perspectives, explicit dissent, named risks, an actionable call. You just got the conversation you were going to have over six meetings, in one pass.
+
+Inspired by Karpathy's LLM Council idea, adapted with persona-driven diversity and optional PM OS memory integration (auto-injects your stakeholder context and goals so recommendations land on your actual situation, not a generic template).
+
+**Use for:** deprecation calls, build-vs-buy, hiring bars, roadmap tradeoffs, reorg choices, anything you've been stuck on for a week.
+
+---
+
+### 3. Ship an Apple-grade landing page in 5 minutes (`liquid-glassify`)
+
+You say: *"Landing page for my AI meeting notetaker. Audience: sales teams. CTA: book a demo."*
+
+The skill asks four more questions (vibe in three words, sections you want, brand color if any, hero pitch in one sentence) and produces a single `index.html` with:
+
+- Animated mesh gradient background (violet to pink to cyan, 30-second slow drift)
+- Floating glass nav at the top, styled like a macOS dock
+- Hero with a backdrop-blurred translucent card, 7vw clamped headline, spring-eased reveal
+- Feature grid with 4 glass cards, inset-highlight borders that catch light on hover
+- Gradient CTA button with a soft inner glow that reacts to click
+- Scroll reveal on every section, cubic-bezier overshoot easing
+- Zero build step, zero dependencies, zero CDNs, under 40KB total
+
+**What the generic "vanilla ChatGPT prompt" gives you:**
+
+```html
+<h1>AI Meeting Notes</h1>
+<p>Never miss a detail.</p>
+<button>Sign up</button>
+```
+
+**What liquid-glassify gives you (hero section, abbreviated):**
+
+```html
+<div class="mesh-bg" aria-hidden="true"></div>
+<nav class="nav">
+  <a href="#features">Features</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#book" class="nav-cta">Book demo</a>
+</nav>
+<section class="hero">
+  <h1 data-reveal>Your sales calls, transcribed and scored<br>before the next one starts.</h1>
+  <p class="lead" data-reveal>Miss zero details. Close 20% faster. Trusted by 300+ sales teams.</p>
+  <a class="cta" data-reveal href="#book">Book a demo →</a>
+</section>
+```
+
+Wrapped in a full design system: 72 lines of CSS tokens, backdrop-filter on every glass panel, six vibe-to-palette presets, three animated background recipes. Open in browser, screenshot for the pitch deck, ship.
+
+**Use for:** hackathon demos, product launches, waitlist pages, portfolio sites, Show HN posts that deserve to rank.
+
+---
 
 ## Install
 
-### Global (available in every Claude Code session)
+Global (every Claude Code session can use them):
 
 ```bash
 git clone https://github.com/rohitjz/claude-for-pms.git
-cp -r claude-for-pms/patrick-winston-presentation ~/.claude/skills/
+cp -r claude-for-pms/{patrick-winston-presentation,council,liquid-glassify} ~/.claude/skills/
 ```
 
-After copying, the skill registers automatically. Trigger it in any Claude Code session.
-
-### Per-project (scoped to one repo)
+Per-project (scoped to one repo):
 
 ```bash
 git clone https://github.com/rohitjz/claude-for-pms.git
 mkdir -p .claude/skills
-cp -r claude-for-pms/patrick-winston-presentation .claude/skills/
+cp -r claude-for-pms/{patrick-winston-presentation,council,liquid-glassify} .claude/skills/
 ```
 
-### Verify
+Verify: run `/skills` in any Claude Code session, or ask Claude to list available skills. Trigger each one by describing your task: "fix my pitch opening," "I need a council on this decision," "make a landing page for X."
 
-In a Claude Code session, type `/skills` or ask Claude to list available skills. `patrick-winston-presentation` should appear.
+## Why this repo exists
 
-## What makes a skill PM-grade
+I kept rewriting the same three prompts:
 
-Every skill in this repo follows four rules:
+1. "Act as a presentation coach, fix my opening..."
+2. "Imagine 5 experts on my team, each with a different lens..."
+3. "Make me a landing page for..."
 
-1. **Opinionated over neutral.** Skills enforce specific rules (Winston's "no jokes at the opening," font minimum 40pt, final slide is contributions). PMs get craft, not options.
-2. **Frameworks over freestyle.** Each skill packages a named framework from someone who has earned the right to be opinionated (Winston, Teresa Torres, Mike Cohn, etc).
-3. **Interactive intake.** The skill asks for context before producing output, so the framework lands on your actual situation, not a generic template.
-4. **Verification built in.** Each skill closes with a checklist the output must pass before the coaching session ends.
+Skills turn those into reusable capabilities. The skill lives in `~/.claude/skills/`, Claude picks it up automatically when the conversation matches, and the 400-word prompt you used to paste into every new session becomes muscle memory Claude already has.
 
-## Why Claude, why skills
+What makes a skill PM-grade instead of another AI template:
 
-Claude Code's skill system turns a good prompt into a reusable capability. Instead of pasting the same "act as a presentation coach applying Winston's framework" prompt every time, the skill lives in your `~/.claude/skills/` folder and Claude picks it up automatically when the conversation matches.
-
-Skills are markdown. No build step, no runtime. If you can edit a file, you can modify the skill.
+1. **Opinionated.** Each skill enforces a specific rule set (Winston's 40pt minimum, Karpathy's five-persona structure, Apple's 20-28px glass radius). No options menus, no "or you could try..."
+2. **Framework-backed.** Named thinkers, documented playbooks. Not vibes.
+3. **Interactive intake.** The skill asks for context before producing output so the framework lands on your actual problem.
+4. **Verification built in.** Each skill closes with a checklist the output must pass before the session ends.
 
 ## Contributing
 
-Feedback, issues, and PRs welcome. If you're a PM who finds a bug in how a skill coaches you, file an issue with the specific exchange where it went wrong.
+PRs welcome. If you adapt a skill to your own context and sharpen it, open a PR with the delta explained. If you want to build a new skill that belongs here (must be PM or builder craft, must enforce a specific framework, should fit in a single SKILL.md), open an issue first to sanity-check the fit.
 
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+## Who
+
+Built by [@rohitjz](https://github.com/rohitjz), a PM leader living in the blur between product and code. Co-authored with Claude.
+
+If a skill earned its keep, ⭐ so the next PM finds it.
