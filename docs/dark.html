@@ -5,66 +5,57 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>claude-for-pms · PM skills for Claude</title>
   <meta name="description" content="Three Claude skills that collapse a week of PM work into one conversation.">
-  <meta name="theme-color" content="#F5E9D8">
+  <meta name="theme-color" content="#08090a">
   <meta property="og:title" content="claude-for-pms">
   <meta property="og:description" content="Three Claude skills that collapse a week of PM work into one conversation.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://rohitjz.github.io/claude-for-pms/">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23E76F2E'/%3E%3Ctext x='50' y='68' font-family='Inter,system-ui' font-size='52' font-weight='510' text-anchor='middle' fill='%23FAF8F5'%3EC%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%235e6ad2'/%3E%3Ctext x='50' y='68' font-family='Inter,system-ui' font-size='52' font-weight='510' text-anchor='middle' fill='%23f7f8f8'%3EC%3C/text%3E%3C/svg%3E">
   <style>
     :root {
-      /* Sand and Sky theme (from reference_brand_system memory) */
-      --bg: #F5E9D8;
-      --panel: #FAF0E0;
-      --elevated: #FFF6E9;
+      /* Linear dark theme */
+      --bg: #08090a;
+      --panel: #0f1011;
+      --elevated: #191a1b;
 
-      --text: #3E2C23;        /* ink */
-      --text-soft: #5C4436;
-      --text-dim: #8A705E;
+      --text: #f7f8f8;
+      --text-soft: #d0d6e0;
+      --text-dim: #8a8f98;
 
-      /* Sand and Sky accents */
-      --ember: #E76F2E;        /* primary signal */
-      --ember-bright: #F08847; /* hover */
-      --ember-hover: #C55417;  /* darker pressed */
-      --sky: #2FA4D7;          /* secondary */
-      --sky-bright: #4FB8E7;
-      --ember-deep: #C55417;   /* mesh deep tone */
+      /* Linear accent */
+      --indigo: #5e6ad2;
+      --indigo-bright: #7170ff;
+      --indigo-hover: #828fff;
+      --indigo-deep: #3a2e6b;
 
-      /* Legacy indigo aliases (keep referenced selectors working with warm palette) */
-      --indigo: var(--ember);
-      --indigo-bright: var(--ember-bright);
-      --indigo-hover: var(--ember-hover);
-      --indigo-deep: var(--ember-deep);
-
-      /* LIQUID GLASS light-theme dome shadow adapted for Sand and Sky.
-         Per reference_liquid_glass_pattern: keep white highlights, swap
-         dark insets to ink tint rgba(62,44,35,0.2). */
+      /* LIQUID GLASS dark-theme dome shadow (from reference_liquid_glass_pattern memory).
+         Dark mode is "lit from within" so both corners stay on the white side. */
       --lg-shadow:
-        0 0 6px rgba(62, 44, 35, 0.04),
-        0 2px 8px rgba(62, 44, 35, 0.1),
-        inset 2.5px 2.5px 0.5px -2.5px rgba(255, 255, 255, 0.95),
-        inset -2.5px -2.5px 0.5px -2.5px rgba(62, 44, 35, 0.22),
-        inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.7),
-        inset -1px -1px 1px -0.5px rgba(62, 44, 35, 0.12),
-        inset 0 0 6px 6px rgba(255, 255, 255, 0.1),
-        inset 0 0 2px 2px rgba(255, 255, 255, 0.06),
-        0 0 12px rgba(255, 255, 255, 0.18);
+        0 0 6px rgba(0, 0, 0, 0.2),
+        0 4px 14px rgba(0, 0, 0, 0.45),
+        inset 2.5px 2.5px 0.5px -2.5px rgba(255, 255, 255, 0.25),
+        inset -2.5px -2.5px 0.5px -2.5px rgba(255, 255, 255, 0.09),
+        inset 1px 1px 1px -0.5px rgba(255, 255, 255, 0.22),
+        inset -1px -1px 1px -0.5px rgba(255, 255, 255, 0.07),
+        inset 0 0 6px 6px rgba(255, 255, 255, 0.04),
+        inset 0 0 2px 2px rgba(255, 255, 255, 0.03),
+        0 0 12px rgba(255, 255, 255, 0.08);
 
       --lg-shadow-sm:
-        0 0 4px rgba(62, 44, 35, 0.04),
-        0 1px 4px rgba(62, 44, 35, 0.1),
-        inset 1.5px 1.5px 0.3px -1.5px rgba(255, 255, 255, 0.9),
-        inset -1.5px -1.5px 0.3px -1.5px rgba(62, 44, 35, 0.2),
-        inset 0.5px 0.5px 0.5px -0.25px rgba(255, 255, 255, 0.6),
-        inset -0.5px -0.5px 0.5px -0.25px rgba(62, 44, 35, 0.1),
-        inset 0 0 3px 3px rgba(255, 255, 255, 0.08),
-        0 0 8px rgba(255, 255, 255, 0.14);
+        0 0 4px rgba(0, 0, 0, 0.18),
+        0 2px 6px rgba(0, 0, 0, 0.4),
+        inset 1.5px 1.5px 0.3px -1.5px rgba(255, 255, 255, 0.22),
+        inset -1.5px -1.5px 0.3px -1.5px rgba(255, 255, 255, 0.08),
+        inset 0.5px 0.5px 0.5px -0.25px rgba(255, 255, 255, 0.18),
+        inset -0.5px -0.5px 0.5px -0.25px rgba(255, 255, 255, 0.06),
+        inset 0 0 3px 3px rgba(255, 255, 255, 0.03),
+        0 0 8px rgba(255, 255, 255, 0.06);
 
-      /* Liquid Glass tint (Sand and Sky validated values) */
-      --lg-tint: rgba(245, 233, 216, 0.52);
-      --lg-tint-strong: rgba(245, 233, 216, 0.74);
+      /* Liquid Glass tint (dark theme, validated range 0.05-0.08) */
+      --lg-tint: rgba(255, 255, 255, 0.06);
+      --lg-tint-strong: rgba(255, 255, 255, 0.1);
 
       /* Radius */
       --r-xs: 6px;
@@ -92,18 +83,16 @@
     /* SVG filter container hidden off-screen */
     .lg-svg { position: absolute; width: 0; height: 0; pointer-events: none; overflow: hidden; }
 
-    /* Mesh background tuned for Sand and Sky (warm ember + sky over sand bg).
-       Lower opacity than dark theme since the light bg doesn't need as much
-       brightness boost for glass to read 3D. */
+    /* Mesh background (vivid so glass has something to refract) */
     .mesh-bg {
       position: fixed; inset: -15%; z-index: -1;
       background:
-        radial-gradient(circle at 20% 25%, var(--ember), transparent 55%),
-        radial-gradient(circle at 82% 18%, var(--sky), transparent 50%),
-        radial-gradient(circle at 50% 90%, #F2A171, transparent 55%),
+        radial-gradient(circle at 22% 28%, var(--indigo), transparent 50%),
+        radial-gradient(circle at 78% 18%, var(--indigo-bright), transparent 45%),
+        radial-gradient(circle at 48% 88%, var(--indigo-deep), transparent 50%),
         var(--bg);
-      filter: blur(90px) saturate(130%);
-      opacity: 0.5;
+      filter: blur(80px) saturate(150%);
+      opacity: 0.75;
       animation: mesh-drift 34s ease-in-out infinite;
     }
     @keyframes mesh-drift {
@@ -134,15 +123,15 @@
       letter-spacing: -0.01em;
       transition: color 0.2s var(--ease-smooth), background 0.2s var(--ease-smooth);
     }
-    .nav a:hover { background: rgba(62, 44, 35, 0.06); color: var(--sky); }
+    .nav a:hover { background: rgba(255, 255, 255, 0.06); color: var(--text); }
     .nav .nav-cta {
-      background: var(--ember);
-      color: #FAF8F5; font-weight: 590;
+      background: var(--indigo);
+      color: #ffffff; font-weight: 590;
       -webkit-backdrop-filter: none;
       backdrop-filter: none;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.28), 0 2px 8px rgba(231, 111, 46, 0.35);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 2px 8px rgba(94, 106, 210, 0.35);
     }
-    .nav .nav-cta:hover { background: var(--ember-hover); transform: scale(1.02); }
+    .nav .nav-cta:hover { background: var(--indigo-hover); transform: scale(1.02); }
 
     @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
       .nav { background: var(--elevated); }
@@ -174,8 +163,8 @@
     }
     .eyebrow::before {
       content: ""; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--ember);
-      box-shadow: 0 0 12px var(--ember);
+      background: var(--indigo-bright);
+      box-shadow: 0 0 12px var(--indigo-bright);
       animation: pulse 2s ease-in-out infinite;
     }
     @keyframes pulse { 50% { opacity: 0.45; } }
@@ -188,7 +177,7 @@
       letter-spacing: -0.034em;
     }
     h1 .accent { color: var(--text-soft); font-weight: 400; letter-spacing: -0.028em; }
-    h1 .ind { color: var(--ember); }
+    h1 .ind { color: var(--indigo-hover); }
     h2 { font-size: clamp(32px, 4vw, 48px); font-weight: 510; letter-spacing: -0.022em; line-height: 1.05; margin-bottom: 16px; }
     h3 { font-size: 20px; font-weight: 590; letter-spacing: -0.012em; margin-bottom: 12px; }
     p.lead {
@@ -211,22 +200,21 @@
       letter-spacing: -0.01em;
       box-shadow:
         inset 0 1px 0 0 rgba(255, 255, 255, 0.22),
-        inset 0 -1px 0 0 rgba(62, 44, 35, 0.15),
-        0 4px 16px rgba(231, 111, 46, 0.4),
-        0 1px 2px rgba(62, 44, 35, 0.18);
+        inset 0 -1px 0 0 rgba(0, 0, 0, 0.15),
+        0 4px 16px rgba(94, 106, 210, 0.35),
+        0 1px 2px rgba(0, 0, 0, 0.25);
       transition: all 0.3s var(--ease-spring);
     }
     .cta:hover {
-      background: var(--ember-hover);
+      background: var(--indigo-hover);
       transform: translateY(-1px);
       box-shadow:
-        inset 0 1px 0 0 rgba(255, 255, 255, 0.32),
-        0 8px 24px rgba(231, 111, 46, 0.5),
-        0 2px 4px rgba(62, 44, 35, 0.2);
+        inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+        0 8px 24px rgba(113, 112, 255, 0.45),
+        0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
-    /* Secondary CTA: glassify chrome + sky for the "navigate" semantic.
-       Ember = convert (primary). Sky = navigate/go-elsewhere (secondary). */
+    /* Secondary CTA: LIQUID GLASS small */
     .cta-secondary {
       display: inline-flex; align-items: center; gap: 8px;
       padding: 12px 22px;
@@ -235,13 +223,13 @@
       backdrop-filter: blur(2px) url('#liquid-distort-sm') saturate(150%);
       border: none;
       border-radius: var(--r-xs);
-      color: var(--sky); font-weight: 590; font-size: 14.5px;
+      color: var(--text); font-weight: 510; font-size: 14.5px;
       letter-spacing: -0.01em;
       box-shadow: var(--lg-shadow-sm);
       transition: all 0.3s var(--ease-spring);
       isolation: isolate;
     }
-    .cta-secondary:hover { background: var(--lg-tint-strong); transform: translateY(-1px); color: var(--sky-bright); }
+    .cta-secondary:hover { background: var(--lg-tint-strong); transform: translateY(-1px); }
 
     /* Inline card: DOME SHADOW ONLY (no SVG filter, per the pattern rules) */
     .card {
@@ -262,19 +250,19 @@
       display: inline-flex; align-items: center; justify-content: center;
       width: 34px; height: 34px;
       border-radius: 10px;
-      background: var(--ember);
-      font-weight: 590; font-size: 14px; color: #FAF8F5;
+      background: var(--indigo);
+      font-weight: 590; font-size: 14px; color: #ffffff;
       letter-spacing: -0.01em;
       box-shadow:
-        inset 0 1px 0 rgba(255, 255, 255, 0.28),
-        0 4px 12px rgba(231, 111, 46, 0.32);
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        0 4px 12px rgba(94, 106, 210, 0.3);
       margin-bottom: 22px;
     }
     .card p { color: var(--text-soft); font-size: 15px; line-height: 1.55; }
     .card .quote-line {
       color: var(--text); font-style: italic;
       margin-top: 20px; padding-top: 20px;
-      border-top: 1px solid rgba(62, 44, 35, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
       font-size: 14.5px;
     }
 
@@ -303,11 +291,11 @@
     .final-cta code {
       display: block; text-align: left;
       padding: 14px 18px;
-      background: rgba(62, 44, 35, 0.08);
-      border: 1px solid rgba(62, 44, 35, 0.12);
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: var(--r-xs);
       font-size: 12.5px;
-      color: var(--text);
+      color: var(--indigo-hover);
       margin: 22px 0 26px;
       overflow-x: auto;
       line-height: 1.7;
@@ -316,16 +304,16 @@
     footer {
       padding: 48px 24px; text-align: center;
       color: var(--text-dim); font-size: 13.5px;
-      border-top: 1px solid rgba(62, 44, 35, 0.1);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
       margin-top: 80px;
     }
-    footer a { color: var(--sky); transition: color 0.2s; font-weight: 510; text-decoration: underline; text-decoration-color: rgba(47, 164, 215, 0.3); text-underline-offset: 2px; }
-    footer a:hover { color: var(--sky-bright); text-decoration-color: var(--sky); }
+    footer a { color: var(--text-soft); transition: color 0.2s; font-weight: 510; }
+    footer a:hover { color: var(--text); }
     footer code {
       display: inline-block; padding: 2px 7px;
-      background: rgba(62, 44, 35, 0.06);
+      background: var(--lg-tint);
       border-radius: 5px; font-size: 12.5px;
-      color: var(--text);
+      color: var(--indigo-hover);
     }
 
     /* Reveal */
@@ -353,7 +341,7 @@
     .stats .stat .n {
       font-size: 36px; font-weight: 510;
       letter-spacing: -0.028em;
-      color: var(--ember);
+      color: var(--indigo-hover);
       line-height: 1;
     }
     .stats .stat .l { font-size: 12.5px; color: var(--text-soft); margin-top: 8px; font-weight: 510; }
